@@ -14,7 +14,7 @@ Includes smooth scrolling, animated sections, scroll progress bar, and interacti
 
 ## 🌐 Live Website
 
-https://Med-aymen-alimi.github.io/
+https://med-aymen-alimi.github.io/
 
 ## 📌 Features
 
