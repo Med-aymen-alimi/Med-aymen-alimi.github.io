@@ -14,11 +14,11 @@
     ul { list-style: none; }
 
     :root {
-        --ink:        #0e1013;
-        --ink-2:      #14171c;
-        --surface:    #181c22;
-        --line:       #272c34;
-        --line-soft:  #1d2128;
+        --ink:        #0f1012;
+        --ink-2:      #15161a;
+        --surface:    #1b1d21;
+        --line:       #2b2d33;
+        --line-soft:  #1f2126;
         --text:       #ecebe7;
         --text-2:     #a8afb9;
         --text-3:     #767d88;
@@ -82,7 +82,7 @@
 
     .topbar {
         position: sticky; top: 0; z-index: 50;
-        background: rgba(14,16,19,.86);
+        background: rgba(15,16,18,.86);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--line-soft);
     }
@@ -107,11 +107,20 @@
 
     /* ---------- hero ---------- */
 
-    .hero { padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem); }
+    .hero {
+        padding-block: clamp(2.75rem, 7vw, 5rem) clamp(2.5rem, 6vw, 4rem);
+        position: relative;
+    }
+    .hero::before {
+        content: ""; position: absolute; z-index: -1;
+        top: -12rem; right: -6rem; width: 42rem; height: 42rem;
+        background: radial-gradient(circle at 50% 50%, rgba(233,180,76,.055), transparent 62%);
+        pointer-events: none;
+    }
     .hero-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 8.5rem;
-        gap: clamp(1.5rem, 4vw, 3rem);
+        grid-template-columns: minmax(0, 1fr) clamp(12.5rem, 23vw, 16.5rem);
+        gap: clamp(1.5rem, 5vw, 3.5rem);
         align-items: start;
     }
     .status {
@@ -139,14 +148,37 @@
     .hero .lede { margin-top: 1.6rem; max-width: 58ch; color: var(--text-2); }
     .hero .lede strong { color: var(--text); font-weight: 500; }
 
-    .portrait {
-        width: 100%; aspect-ratio: 1; object-fit: cover;
-        border-radius: 3px; border: 1px solid var(--line);
-        filter: saturate(.92);
+    /* the photo is a light studio shot, so it gets mounted on a light plate
+       instead of being cut into the dark page */
+    .plate {
+        background: #f3f0e9;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px -22px rgba(0,0,0,.9);
+        outline: 1px solid rgba(233,180,76,.28);
+        outline-offset: -1px;
     }
-    @media (max-width: 620px) {
+    .plate img {
+        display: block; width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        object-position: 50% 8%;
+    }
+    .aside { margin-top: 1.3rem; display: grid; gap: .8rem; }
+    .aside li {
+        font-size: .89rem; color: var(--text-2); line-height: 1.5;
+        border-top: 1px solid var(--line-soft); padding-top: .75rem;
+    }
+    .aside li:first-child { border-top: 0; padding-top: 0; }
+    .aside b { color: var(--text); font-weight: 500; }
+    @media (max-width: 700px) {
         .hero-grid { grid-template-columns: 1fr; }
-        .portrait { width: 5.5rem; }
+        .hero-side { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1.25rem; align-items: center; }
+        .aside { margin-top: 0; }
+    }
+    @media (max-width: 420px) {
+        .hero-side { grid-template-columns: 1fr; }
+        .plate { max-width: 9rem; }
     }
 
     .contact-row {
@@ -295,8 +327,21 @@
     .honours .rank { font-family: var(--serif); font-size: 1.05rem; color: var(--signal); }
     .honours p { font-size: .93rem; color: var(--text-2); }
     .honours strong { color: var(--text); font-weight: 500; display: block; font-size: .97rem; }
-    figure.shot { margin-top: 1.5rem; }
-    figure.shot img { width: 100%; display: block; border-radius: 3px; border: 1px solid var(--line); }
+
+    /* a full-length vertical photo would dominate the column, so it's cropped
+       to a landscape band that keeps the face and the cheque in frame */
+    figure.shot { margin-top: 1.6rem; max-width: 26rem; }
+    figure.shot .frame {
+        border-radius: 4px; overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--ink);
+    }
+    figure.shot img {
+        display: block; width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        object-position: 50% 18%;
+    }
     figure.shot figcaption { color: var(--text-3); font-size: .84rem; margin-top: .6rem; }
 
     /* ---------- teaching / community ---------- */
@@ -407,7 +452,16 @@
                         <span class="where">Sfax, Tunisia</span>
                     </p>
                 </div>
-                <img class="portrait rise" src="images/p2.png" alt="Portrait of Aymen Alimi">
+                <div class="hero-side rise">
+                    <figure class="plate">
+                        <img src="images/p2.png" alt="Portrait of Aymen Alimi">
+                    </figure>
+                    <ul class="aside">
+                        <li><b>AI engineer at Miral Dev</b>, Sfax, since September 2025</li>
+                        <li><b>Generative AI instructor</b> at GoMyCode, part-time</li>
+                        <li><b>Organizer</b>, Google Developer Groups Sfax</li>
+                    </ul>
+                </div>
             </div>
 
             <!-- the pipeline: the argument the whole site makes -->
@@ -693,8 +747,10 @@
                         </li>
                     </ul>
                     <figure class="shot">
-                        <img src="images/p1.jpg" alt="Receiving the second prize at the UVT AI Hackathon">
-                        <figcaption>UVT AI Hackathon, second prize.</figcaption>
+                        <div class="frame">
+                            <img src="images/p1.jpg" alt="Receiving the second prize at the UVT AI Hackathon">
+                        </div>
+                        <figcaption>UVT AI Hackathon, second prize, October 2024.</figcaption>
                     </figure>
                 </div>
             </div>
